@@ -1,6 +1,6 @@
 # chef-haclusters-cookbook
 
- This chef cookbook allows to simulate node environments in nodes definition by the use of data bags...
+ This chef cookbook allows to simulate node environments in node definitions by the use of data bags...
 
 ## Supported Platforms
 
@@ -20,7 +20,7 @@
 
 ## Usage
 
- Default attributes can be definied in a data bag whose item is the fqdn of the node. Then, an other cookbook can be applied...
+ Default attributes can be definied in a data bag whose items are the fqdn of the nodes. Then, an other cookbook can be applied...
 
  (1): Dots are not allowed (only alphanumeric), substitute by underscores
 
