@@ -33,25 +33,13 @@
 #data
 #end
 
-if node['databag_name'].is_a? Array
-  node['databag_name'].each do |i|
-    return 1 if ! i = data_bag_item( i, node['fqdn'].gsub(".", "_") )
-    if node['mode'] == 'override'
-          context = getEnv( context, i )
-    else  context = addEnv( context, i )
-    end
-  end
-else
-  return 1 if ! context = data_bag_item( node['databag_name'], node['fqdn'].gsub(".", "_") )
-end
-
-def getEnv( context, val, merge )
+$getEnv= lambda{|context, val, merge|
   val.each do |name, val|
     if val.is_a? Hash
       if !merge || !(context.is_a? Hash)
         context[name] = val
       else
-        context[name] = getEnv( context[name], val, merge )
+        context[name] = $getEnv.call( context[name], val, merge )
       end
     else
       if val.is_a? Array
@@ -66,6 +54,15 @@ def getEnv( context, val, merge )
     end
   end
   context
+}
+
+if node['databag_name'].is_a? Array
+  node['databag_name'].each do |i|
+    return 1 if ! i = data_bag_item( i, node['fqdn'].gsub(".", "_") )
+    context = $getEnv.call( context, i, node['mergeMode'] )
+  end
+else
+  return 1 if ! context = data_bag_item( node['databag_name'], node['fqdn'].gsub(".", "_") )
 end
 
-node.default = getEnv( node.default, context, node['mergeMode'] )
+node.default = $getEnv.call( node.default, context, node['mergeMode'] )
