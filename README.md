@@ -18,7 +18,7 @@
   <tr>
     <td><tt>databag_name</tt></td>
     <td>String/StringArea</td>
-    <td>where found the fqbn item</td>
+    <td>where found the fqdn item</td>
     <td><tt>nodes</tt></td>
   </tr>
   <tr>
