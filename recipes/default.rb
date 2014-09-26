@@ -61,6 +61,5 @@ if node['databag_name'].is_a? Array
   end
 else
   return 1 if ! context = data_bag_item( node['databag_name'], node['fqdn'].gsub(".", "_") )
+  node.default = $getEnv.call( node.default, context, node['mergeMode'] )
 end
-
-node.default = $getEnv.call( node.default, context, node['mergeMode'] )
