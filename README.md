@@ -134,10 +134,13 @@ Include `chef-nodeAttributes` in your node's `run_list`:
     "databag_name": "clusters"
   },
   "run_list": [
-    "recipe[chef-nodeAttributes::default]"...
+    "recipe[chef-nodeAttributes::default]",
+    "recipe[other.chef-cookbook::recipe]"
   ]
 }
 ```
+
+ So, node.default is then settled from the data bag definitions, on the item "fqdn" of the node. An other cookbook::recipe can be applied...
 
 ## License and Authors
 
