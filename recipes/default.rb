@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: chef-haclusters
+# Cookbook Name:: chef-nodeAttributes
 # Recipe:: default
 #
 # Copyright (C) 2014 PE, pf.
@@ -24,7 +24,7 @@
 #  raise unless data= data_bag_item( name, item )
 #  rescue Exception
 #    puts '********************************************************************************'
-#    puts "No databag definition: #{name}(#{item})..."
+#    puts 'No databag definition: #{name}(#{item})...'
 #    puts '********************************************************************************'
 #    return
 #  ensure
@@ -33,13 +33,13 @@
 #data
 #end
 
-$getEnv= lambda{|context, val, merge|
+$getEnv= lambda { |context, val, merge|
   val.each do |name, val|
     if val.is_a? Hash
       if !merge || !(context.is_a? Hash)
         context[name] = val
       else
-        context[name] = $getEnv.call( context[name], val, merge )
+        context[name] = $getEnv.call(context[name], val, merge)
       end
     elsif val.is_a? Array
       if !context[name] || !merge || !(context[name].is_a? Array)
@@ -48,7 +48,7 @@ $getEnv= lambda{|context, val, merge|
         context[name] += val
       end
     else
-      context[name] = val if !context[name] || context[name]=={} || !merge
+      context[name] = val if !context[name] || context[name] == {} || !merge
     end
   end
   context
@@ -56,10 +56,10 @@ $getEnv= lambda{|context, val, merge|
 
 if node['databag_name'].is_a? Array
   node['databag_name'].each do |i|
-    return 1 if ! i = data_bag_item( i, node['fqdn'].gsub(".", "_") )
-    context = $getEnv.call( context, i, node['mergeMode'] )
+    return 1 if ! i = data_bag_item(i, node['fqdn'].gsub('.', '_'))
+    context = $getEnv.call(context, i, node['mergeMode'])
   end
 else
-  return 1 if ! context = data_bag_item( node['databag_name'], node['fqdn'].gsub(".", "_") )
-  node.default = $getEnv.call( node.default, context, node['mergeMode'] )
+  return 1 if ! context = data_bag_item(node['databag_name'], node['fqdn'].gsub('.', '_'))
+  node.default = $getEnv.call(node.default, context, node['mergeMode'])
 end

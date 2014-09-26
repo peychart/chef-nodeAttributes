@@ -11,20 +11,21 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # options are documented and commented below. For a complete reference,
   # please see the online documentation at vagrantup.com.
 
-  config.vm.hostname = "chef-haclusters-berkshelf"
+  config.vm.hostname = "chef-nodeAttributes-berkshelf"
 
   # Set the version of chef to install using the vagrant-omnibus plugin
-  config.omnibus.chef_version = :latest
+  # config.omnibus.chef_version = :latest
 
   # Every Vagrant virtual environment requires a box to build off of.
   # If this value is a shorthand to a box in Vagrant Cloud then 
   # config.vm.box_url doesn't need to be specified.
-  config.vm.box = "chef/ubuntu-14.04"
+  config.vm.box = "ubuntu-14.04-chef"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # is not a Vagrant Cloud box and if it doesn't already exist on the 
   # user's system.
   # config.vm.box_url = "https://vagrantcloud.com/chef/ubuntu-14.04/version/1/provider/virtualbox.box"
+  config.vm.box_url = "http://bit.ly/1pK1sQ8"
 
   # Assign this VM to a host-only network IP, allowing you to access it
   # via the IP. Host-only networks can talk to the host machine as well as
@@ -82,7 +83,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     }
 
     chef.run_list = [
-        "recipe[chef-haclusters::default]"
+        "recipe[chef-nodeAttributes::default]"
     ]
   end
 end
