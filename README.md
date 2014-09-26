@@ -15,7 +15,18 @@
     <th>Description</th>
     <th>Default</th>
   </tr>
-  No default attribute
+  <tr>
+    <td><tt>['databaag_name(s)']</tt></td>
+    <td>String/StringArea</td>
+    <td>where found the fqbn item</td>
+    <td><tt>nodes</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['mergeMode']</tt></td>
+    <td>Boolean</td>
+    <td>merge env or override when existing</td>
+    <td><tt>TRUE</tt></td>
+  </tr>
 </table>
 
 ## Usage
@@ -112,12 +123,16 @@ eg:
 }
 </pre>
 
-### chef-haclusters::default
 
-Include `chef-haclusters` in your node's `run_list`:
+### chef-nodeAttributes::default
+
+Include `chef-nodeAttributes` in your node's `run_list`:
 
 ```json
 {
+  "override_attributes": {
+    "databag_name": "clusters"
+  },
   "run_list": [
     "recipe[chef-nodeAttributes::default]"...
   ]
