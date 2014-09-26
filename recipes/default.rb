@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: chef-haclusters
+# Cookbook Name:: chef-nodeAttributes
 # Recipe:: default
 #
 # Copyright (C) 2014 PE, pf.

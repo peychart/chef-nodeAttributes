@@ -1,4 +1,4 @@
-# chef-haclusters-cookbook
+# chef-nodeAttributes-cookbook
 
  This chef cookbook allows to simulate node environments in node definitions by the use of data bags...
 
