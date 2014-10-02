@@ -36,7 +36,7 @@
 $getEnv= lambda { |context, val, merge|
   val.each do |name, val|
     if val.is_a? Hash
-      if !merge || !(context.is_a? Hash)
+      if !(context.is_a? Hash)
         context[name] = val
       else
         context[name] = $getEnv.call(context[name], val, merge)
