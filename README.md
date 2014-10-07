@@ -16,16 +16,22 @@
     <th>Default</th>
   </tr>
   <tr>
-    <td><tt>databag_name</tt></td>
+    <td><tt>['chef-nodeAttributes']['databag_name']</tt></td>
     <td>String/StringArea</td>
     <td>where found the fqdn item</td>
     <td><tt>nodes</tt></td>
   </tr>
   <tr>
-    <td><tt>mergeMode</tt></td>
+    <td><tt>['chef-nodeAttributes']['mergeMode']</tt></td>
     <td>Boolean</td>
     <td>merge env or override when existing</td>
     <td><tt>TRUE</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['chef-nodeAttributes']['precedence']</tt></td>
+    <td>String</td>
+    <td>Precedence to apply in the next run</td>
+    <td><tt>normal (see: https://docs.getchef.com/essentials_cookbook_attribute_files.html#attribute-types)</tt></td>
   </tr>
 </table>
 
@@ -130,17 +136,19 @@ Include `chef-nodeAttributes` in your node's `run_list`:
 
 ```json
 {
-  "override_attributes": {
-    "databag_name": "clusters"
+  "override_attributes" => {
+    "chef-nodeAttributes" => {
+      "databag_name" => "clusters"
+    }
   },
-  "run_list": [
-    "recipe[chef-nodeAttributes::default]",
-    "recipe[other.chef-cookbook::recipe]"
+  "run_list" => [
+    "other.chef-nodeAttributes::default",
+    "other.chef-cookbook::recipe"
   ]
 }
 ```
 
- So, node.default is then settled from the data bag definitions, on the item "fqdn" of the node. An other cookbook::recipe can be applied...
+ So, node.default is then settled from the data bag definitions, on the item "fqdn" of the node; then node.'precedence' = node.default. An other cookbook::recipe can be applied...
 
 ## License and Authors
 

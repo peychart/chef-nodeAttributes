@@ -19,20 +19,6 @@
 #
 # PE-20140916
 
-#def openDatBagItem( name, item )
-#begin
-#  raise unless data= data_bag_item( name, item )
-#  rescue Exception
-#    puts '********************************************************************************'
-#    puts 'No databag definition: #{name}(#{item})...'
-#    puts '********************************************************************************'
-#    return
-#  ensure
-#    #
-#end
-#data
-#end
-
 $getEnv= lambda { |context, val, merge|
   val.each do |name, val|
     if val.is_a? Hash
@@ -54,12 +40,21 @@ $getEnv= lambda { |context, val, merge|
   context
 }
 
-if node['databag_name'].is_a? Array
-  node['databag_name'].each do |i|
+if node['chef-nodeAttributes']['databag_name'].is_a? Array
+  node['chef-nodeAttributes']['databag_name'].each do |i|
     return 1 if ! i = data_bag_item(i, node['fqdn'].gsub('.', '_'))
-    context = $getEnv.call(context, i, node['mergeMode'])
+    context = $getEnv.call(context, i, node['chef-nodeAttributes']['mergeMode'])
   end
 else
-  return 1 if ! context = data_bag_item(node['databag_name'], node['fqdn'].gsub('.', '_'))
-  node.default = $getEnv.call(node.default, context, node['mergeMode'])
+  return 1 if ! context = data_bag_item(node['chef-nodeAttributes']['databag_name'], node['fqdn'].gsub('.', '_'))
+  node.default = $getEnv.call(node.default, context, node['chef-nodeAttributes']['mergeMode'])
+end
+
+case node['chef-nodeAttributes']['precedence']
+  when 'force_default'  then node.force_default  = node.default
+  when 'force_override' then node.force_override = node.default
+  when 'normal'         then node.normal         = node.default
+  when 'override'       then node.override       = node.default
+  when 'force_override' then node.force_override = node.default
+  when 'automatic'      then node.automatic      = node.default
 end

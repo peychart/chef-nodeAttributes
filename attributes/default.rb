@@ -19,5 +19,7 @@
 #
 # PE-20140916
 
-default['databag_name'] = 'nodes'
-default['mergeMode'] = TRUE
+default['chef-nodeAttributes']['databag_name'] = 'nodes'
+default['chef-nodeAttributes']['mergeMode'] = TRUE
+default['chef-nodeAttributes']['precedence'] = 'normal'
+
