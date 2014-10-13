@@ -20,21 +20,21 @@
 # PE-20140916
 
 $getEnv= lambda { |context, val, merge|
-  val.each do |name, val|
-    if val.is_a? Hash
+  val.each do |name, v|
+    if v.is_a? Hash
       if !(context.is_a? Hash)
-        context[name] = val
+        context[name] = v
       else
-        context[name] = $getEnv.call(context[name], val, merge)
+        context[name] = $getEnv.call(context[name], v, merge)
       end
-    elsif val.is_a? Array
+    elsif v.is_a? Array
       if !context[name] || !merge || !(context[name].is_a? Array)
-        context[name]  = val
+        context[name]  = v
       else
-        context[name] += val
+        context[name] += v
       end
     else
-      context[name] = val if !context[name] || context[name] == {} || !merge
+      context[name] = v if !context[name] || context[name] == {} || !merge
     end
   end
   context
