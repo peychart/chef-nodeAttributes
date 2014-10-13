@@ -28,13 +28,13 @@ $getEnv= lambda { |context, val, merge|
         context[name] = $getEnv.call(context[name], v, merge)
       end
     elsif v.is_a? Array
-      if !context[name] || !merge || !(context[name].is_a? Array)
+      if context[name]=={} || !merge || !(context[name].is_a? Array)
         context[name]  = v
       else
         context[name] += v
       end
     else
-      context[name] = v if !context[name] || context[name] == {} || !merge
+      context[name] = v if context[name]=={} || !merge
     end
   end
   context
