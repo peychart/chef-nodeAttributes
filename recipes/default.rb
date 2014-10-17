@@ -19,22 +19,14 @@
 #
 # PE-20140916
 
-$getEnv= lambda { |context, val, merge|
+$getEnv= lambda { |context, val, overwrite=true|
   val.each do |name, v|
     if v.is_a? Hash
-      if !(context.is_a? Hash)
-        context[name] = v
-      else
-        context[name] = $getEnv.call(context[name], v, merge)
-      end
+      $getEnv.call( context[name], v )
     elsif v.is_a? Array
-      if context[name]=={} || !merge || !(context[name].is_a? Array)
-        context[name]  = v
-      else
-        context[name] += v
-      end
+      context[name] = Array( overwrite ? [] : context[name] ) + v
     else
-      context[name] = v if context[name]=={} || !merge
+      context[name] = v if context[name] || context[name]=={} || overwrite
     end
   end
   context
@@ -42,12 +34,12 @@ $getEnv= lambda { |context, val, merge|
 
 if node['chef-nodeAttributes']['databag_name'].is_a? Array
   node['chef-nodeAttributes']['databag_name'].each do |i|
-    return 1 if ! i = data_bag_item(i, node['fqdn'].gsub('.', '_'))
-    context = $getEnv.call(context, i, node['chef-nodeAttributes']['mergeMode'])
+    return 1 if ! i = data_bag_item( i, node['fqdn'].gsub('.', '_') )
+    $getEnv.call( context, i, node['chef-nodeAttributes']['overwrite'] )
   end
 else
-  return 1 if ! context = data_bag_item(node['chef-nodeAttributes']['databag_name'], node['fqdn'].gsub('.', '_'))
-  node.default = $getEnv.call(node.default, context, node['chef-nodeAttributes']['mergeMode'])
+  return 1 if ! context = data_bag_item( node['chef-nodeAttributes']['databag_name'], node['fqdn'].gsub('.', '_') )
+  $getEnv.call( node.default, context, node['chef-nodeAttributes']['overwrite'] )
 end
 
 case node['chef-nodeAttributes']['precedence']

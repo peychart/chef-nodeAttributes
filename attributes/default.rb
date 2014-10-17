@@ -20,6 +20,6 @@
 # PE-20140916
 
 default['chef-nodeAttributes']['databag_name'] = 'nodes'
-default['chef-nodeAttributes']['mergeMode'] = FALSE
+default['chef-nodeAttributes']['overide'] = TRUE
 default['chef-nodeAttributes']['precedence'] = 'normal'
 
