@@ -22,9 +22,9 @@
     <td><tt>nodes</tt></td>
   </tr>
   <tr>
-    <td><tt>['chef-nodeAttributes']['mergeMode']</tt></td>
+    <td><tt>['chef-nodeAttributes']['overwrite']</tt></td>
     <td>Boolean</td>
-    <td>merge env or override when existing</td>
+    <td>overwrite env when existing</td>
     <td><tt>TRUE</tt></td>
   </tr>
   <tr>
