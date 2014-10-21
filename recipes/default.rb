@@ -34,11 +34,17 @@ $getEnv= lambda { |context, val, overwrite=true|
 
 if node['chef-nodeAttributes']['databag_name'].is_a? Array
   node['chef-nodeAttributes']['databag_name'].each do |i|
-    return 1 if ! i = data_bag_item( i, node['fqdn'].gsub('.', '_') )
+    if node['chef-nodeAttributes']['secretpath']
+         return 1 if ! i = Chef::EncryptedDataBagItem.load( i, node['fqdn'].gsub('.', '_'), node['chef-nodeAttributes']['secretpath'] )
+    else return 1 if ! i = data_bag_item( i, node['fqdn'].gsub('.', '_') )
+    end
     $getEnv.call( context, i, node['chef-nodeAttributes']['overwrite'] )
   end
 else
-  return 1 if ! context = data_bag_item( node['chef-nodeAttributes']['databag_name'], node['fqdn'].gsub('.', '_') )
+  if node['chef-nodeAttributes']['secretpath']
+       return 1 if ! i = Chef::EncryptedDataBagItem.load( i, node['fqdn'].gsub('.', '_'), node['chef-nodeAttributes']['secretpath'] )
+  else return 1 if ! context = data_bag_item( node['chef-nodeAttributes']['databag_name'], node['fqdn'].gsub('.', '_') )
+  end
   $getEnv.call( node.default, context, node['chef-nodeAttributes']['overwrite'] )
 end
 
