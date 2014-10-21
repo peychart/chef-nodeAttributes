@@ -33,6 +33,12 @@
     <td>Precedence to apply in the next run</td>
     <td><tt>normal (see: https://docs.getchef.com/essentials_cookbook_attribute_files.html#attribute-types)</tt></td>
   </tr>
+  <tr>
+    <td><tt>['chef-nodeAttributes']['secretpath']</tt></td>
+    <td>String/boolean</td>
+    <td>location of the encryption key (TRUE for default)</td>
+    <td><tt>FALSE</tt></td>
+  </tr>
 </table>
 
 ## Usage
