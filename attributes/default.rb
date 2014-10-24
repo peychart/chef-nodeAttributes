@@ -20,7 +20,6 @@
 # PE-20140916
 
 default['chef-nodeAttributes']['databag_name'] = 'nodes'
-default['chef-nodeAttributes']['overwrite'] = TRUE
 default['chef-nodeAttributes']['precedence'] = 'normal'
 default['chef-nodeAttributes']['secretpath'] = nil	# TRUE/FALSE/encryption key location
 

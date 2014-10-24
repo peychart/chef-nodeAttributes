@@ -19,14 +19,17 @@
 #
 # PE-20140916
 
-$getEnv= lambda { |context, val, overwrite=true|
-  val.each do |name, v|
+$getEnv= lambda { |context, val|
+  val.each do |n, v|
     if v.is_a? Hash
-      $getEnv.call( context[name], v )
+      if ( n[0]=='!' || context[ n[0]=='!' ? n[1..-1] : n ]=={} )
+           context[ n[0]=='!' ? n[1..-1] : n ] = v
+      else context[ n[0]=='!' ? n[1..-1] : n ] = $getEnv.call( context[ n[0]=='!' ? n[1..-1] : n ], v )
+      end
     elsif v.is_a? Array
-      context[name] = Array( overwrite ? [] : context[name] ) + v
+      context[ n[0]=='!' ? n[1..-1] : n ] = Array( n[0]=='!' ? [] : context[ n ] ) + v
     else
-      context[name] = v if context[name] || context[name]=={} || overwrite
+      context[ n[0]=='!' ? n[1..-1] : n ] = v
     end
   end
   context
@@ -36,22 +39,22 @@ if node['chef-nodeAttributes']['databag_name'].is_a? Array
   node['chef-nodeAttributes']['databag_name'].each do |i|
     if node['chef-nodeAttributes']['secretpath']
          if node['chef-nodeAttributes']['secretpath'].is_a? String
-              return 1 if ! i = Chef::EncryptedDataBagItem.load( i, node['fqdn'].gsub('.', '_'), node['chef-nodeAttributes']['secretpath'] )
+              return 1 if ! i = Chef::EncryptedDataBagItem.load( i, node['fqdn'].gsub('.', '_'), Chef::EncryptedDataBagItem.load_secret( node['chef-nodeAttributes']['secretpath'] ) )
          else return 1 if ! i = Chef::EncryptedDataBagItem.load( i, node['fqdn'].gsub('.', '_') )
          end
     else return 1 if ! i = data_bag_item( i, node['fqdn'].gsub('.', '_') )
     end
-    $getEnv.call( context, i, node['chef-nodeAttributes']['overwrite'] )
+    $getEnv.call( context, i )
   end
 else
   if node['chef-nodeAttributes']['secretpath']
     if node['chef-nodeAttributes']['secretpath'].is_a? String
-         return 1 if ! i = Chef::EncryptedDataBagItem.load( i, node['fqdn'].gsub('.', '_'), node['chef-nodeAttributes']['secretpath'] )
+         return 1 if ! i = Chef::EncryptedDataBagItem.load( i, node['fqdn'].gsub('.', '_'), Chef::EncryptedDataBagItem.load_secret( node['chef-nodeAttributes']['secretpath'] ) )
     else return 1 if ! i = Chef::EncryptedDataBagItem.load( i, node['fqdn'].gsub('.', '_') )
     end
   else return 1 if ! context = data_bag_item( node['chef-nodeAttributes']['databag_name'], node['fqdn'].gsub('.', '_') )
   end
-  $getEnv.call( node.default, context, node['chef-nodeAttributes']['overwrite'] )
+  $getEnv.call( node.default, context )
 end
 
 case node['chef-nodeAttributes']['precedence']

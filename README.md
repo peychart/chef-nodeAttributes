@@ -22,12 +22,6 @@
     <td><tt>nodes</tt></td>
   </tr>
   <tr>
-    <td><tt>['chef-nodeAttributes']['overwrite']</tt></td>
-    <td>Boolean</td>
-    <td>overwrite env when existing</td>
-    <td><tt>TRUE</tt></td>
-  </tr>
-  <tr>
     <td><tt>['chef-nodeAttributes']['precedence']</tt></td>
     <td>String</td>
     <td>Precedence to apply in the next run</td>
@@ -43,7 +37,9 @@
 
 ## Usage
 
- Default attributes can be definied in a data bag whose items are the fqdn of the nodes. Then, an other cookbook can be applied...
+ Default attributes can be completed within a data bag whose items are the fqdn(1) of the nodes. Then, an other cookbook can be applied...
+
+ When the attribute name is preceded with '!' in the data bag definition, any initial values of the array or hash are deleted.
 
  (1): Dots are not allowed (only alphanumeric), substitute by underscores
 
