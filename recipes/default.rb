@@ -24,7 +24,7 @@ $getEnv= lambda { |context, val|
     if v.is_a? Hash
       if ( n[0]=='!' || context[ n[0]=='!' ? n[1..-1] : n ]=={} )
            context[ n[0]=='!' ? n[1..-1] : n ] = v
-      else context[ n[0]=='!' ? n[1..-1] : n ] = $getEnv.call( context[ n[0]=='!' ? n[1..-1] : n ], v )
+      else context[ n[0]=='!' ? n[1..-1] : n ] = $getEnv.call( context[ n ], v )
       end
     elsif v.is_a? Array
       context[ n[0]=='!' ? n[1..-1] : n ] = Array( n[0]=='!' ? [] : context[ n ] ) + v
