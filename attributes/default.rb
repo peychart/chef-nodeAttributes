@@ -21,5 +21,5 @@
 
 default['chef-nodeAttributes']['databag_name'] = 'nodes'
 default['chef-nodeAttributes']['precedence'] = 'normal'
-default['chef-nodeAttributes']['secretpath'] = nil	# TRUE/FALSE/encryption key location
+default['chef-nodeAttributes']['secret_key'] = nil	# TRUE/FALSE/encryption key location
 

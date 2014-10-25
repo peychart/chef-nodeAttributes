@@ -37,9 +37,9 @@ $getEnv= lambda { |context, val|
 
 if node['chef-nodeAttributes']['databag_name'].is_a? Array
   node['chef-nodeAttributes']['databag_name'].each do |i|
-    if node['chef-nodeAttributes']['secretpath']
-         if node['chef-nodeAttributes']['secretpath'].is_a? String
-              return 1 if ! i = Chef::EncryptedDataBagItem.load( i, node['fqdn'].gsub('.', '_'), Chef::EncryptedDataBagItem.load_secret( node['chef-nodeAttributes']['secretpath'] ) )
+    if node['chef-nodeAttributes']['secret_key']
+         if node['chef-nodeAttributes']['secret_key'].is_a? String
+              return 1 if ! i = Chef::EncryptedDataBagItem.load( i, node['fqdn'].gsub('.', '_'), Chef::EncryptedDataBagItem.load_secret( node['chef-nodeAttributes']['secret_key'] ) )
          else return 1 if ! i = Chef::EncryptedDataBagItem.load( i, node['fqdn'].gsub('.', '_') )
          end
     else return 1 if ! i = data_bag_item( i, node['fqdn'].gsub('.', '_') )
@@ -47,9 +47,9 @@ if node['chef-nodeAttributes']['databag_name'].is_a? Array
     $getEnv.call( context, i )
   end
 else
-  if node['chef-nodeAttributes']['secretpath']
-    if node['chef-nodeAttributes']['secretpath'].is_a? String
-         return 1 if ! i = Chef::EncryptedDataBagItem.load( i, node['fqdn'].gsub('.', '_'), Chef::EncryptedDataBagItem.load_secret( node['chef-nodeAttributes']['secretpath'] ) )
+  if node['chef-nodeAttributes']['secret_key']
+    if node['chef-nodeAttributes']['secret_key'].is_a? String
+         return 1 if ! i = Chef::EncryptedDataBagItem.load( i, node['fqdn'].gsub('.', '_'), Chef::EncryptedDataBagItem.load_secret( node['chef-nodeAttributes']['secret_key'] ) )
     else return 1 if ! i = Chef::EncryptedDataBagItem.load( i, node['fqdn'].gsub('.', '_') )
     end
   else return 1 if ! context = data_bag_item( node['chef-nodeAttributes']['databag_name'], node['fqdn'].gsub('.', '_') )
