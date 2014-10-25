@@ -28,7 +28,7 @@
     <td><tt>normal (see: https://docs.getchef.com/essentials_cookbook_attribute_files.html#attribute-types)</tt></td>
   </tr>
   <tr>
-    <td><tt>['chef-nodeAttributes']['secretpath']</tt></td>
+    <td><tt>['chef-nodeAttributes']['secret_key']</tt></td>
     <td>String/boolean</td>
     <td>location of the encryption key (TRUE for default)</td>
     <td><tt>FALSE</tt></td>
