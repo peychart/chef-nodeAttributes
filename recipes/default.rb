@@ -39,8 +39,8 @@ def getDataBag( name, item, secret_key )
   begin
   if secret_key
        if secret_key.is_a? String
-            raise unless databag = Chef::EncryptedDataBagItem.load( name, item.gsub('.', '_'), Chef::EncryptedDataBagItem.load_secret( secret_key ) )
-       else raise unless databag = Chef::EncryptedDataBagItem.load( name, item.gsub('.', '_') )
+            raise unless databag = Chef::EncryptedDataBagItem.load( name, item.gsub('.', '_'), Chef::EncryptedDataBagItem.load_secret( secret_key ) ).to_hash
+       else raise unless databag = Chef::EncryptedDataBagItem.load( name, item.gsub('.', '_') ).to_hash
        end
   else raise unless databag = data_bag_item( name, item.gsub('.', '_') )
   end
