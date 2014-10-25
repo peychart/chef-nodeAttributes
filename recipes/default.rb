@@ -31,30 +31,35 @@ $getEnv= lambda { |context, val|
     else
       context[ n[0]=='!' ? n[1..-1] : n ] = v
     end
-  end
+  end if val
   context
 }
 
+def getDataBag( name, item, secret_key )
+  begin
+  if secret_key
+       if secret_key.is_a? String
+            raise unless databag = Chef::EncryptedDataBagItem.load( name, item.gsub('.', '_'), Chef::EncryptedDataBagItem.load_secret( secret_key ) )
+       else raise unless databag = Chef::EncryptedDataBagItem.load( name, item.gsub('.', '_') )
+       end
+  else raise unless databag = data_bag_item( name, item.gsub('.', '_') )
+  end
+  rescue Exception
+    puts '********************************************************************'
+    puts "No such a data bag or role for the node #{node['fqdn']}..."
+    puts '********************************************************************'
+    return nil
+  ensure
+  end
+  databag
+end
+
 if node['chef-nodeAttributes']['databag_name'].is_a? Array
   node['chef-nodeAttributes']['databag_name'].each do |i|
-    if node['chef-nodeAttributes']['secret_key']
-         if node['chef-nodeAttributes']['secret_key'].is_a? String
-              return 1 if ! i = Chef::EncryptedDataBagItem.load( i, node['fqdn'].gsub('.', '_'), Chef::EncryptedDataBagItem.load_secret( node['chef-nodeAttributes']['secret_key'] ) )
-         else return 1 if ! i = Chef::EncryptedDataBagItem.load( i, node['fqdn'].gsub('.', '_') )
-         end
-    else return 1 if ! i = data_bag_item( i, node['fqdn'].gsub('.', '_') )
-    end
-    $getEnv.call( context, i )
+     $getEnv.call( node.default, getDataBag( i, node['fqdn'], node['chef-nodeAttributes']['secret_key'] ) )
   end
-else
-  if node['chef-nodeAttributes']['secret_key']
-    if node['chef-nodeAttributes']['secret_key'].is_a? String
-         return 1 if ! i = Chef::EncryptedDataBagItem.load( i, node['fqdn'].gsub('.', '_'), Chef::EncryptedDataBagItem.load_secret( node['chef-nodeAttributes']['secret_key'] ) )
-    else return 1 if ! i = Chef::EncryptedDataBagItem.load( i, node['fqdn'].gsub('.', '_') )
-    end
-  else return 1 if ! context = data_bag_item( node['chef-nodeAttributes']['databag_name'], node['fqdn'].gsub('.', '_') )
-  end
-  $getEnv.call( node.default, context )
+else i = node['chef-nodeAttributes']['databag_name']
+     $getEnv.call( node.default, getDataBag( i, node['fqdn'], node['chef-nodeAttributes']['secret_key'] ) )
 end
 
 case node['chef-nodeAttributes']['precedence']
