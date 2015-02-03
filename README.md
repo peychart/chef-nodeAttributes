@@ -16,12 +16,6 @@
     <th>Default</th>
   </tr>
   <tr>
-    <td><tt>['chef-nodeAttributes'][*]</tt></td>
-    <td>String/StringArea</td>
-    <td>Data bag where to found the fqdn item</td>
-    <td><tt>nil</tt></td>
-  </tr>
-  <tr>
     <td><tt>['chef-nodeAttributes']['precedence']</tt></td>
     <td>String</td>
     <td>Precedence to apply in the next run</td>
@@ -32,6 +26,12 @@
     <td>String/boolean</td>
     <td>location of the encryption key (TRUE for default)</td>
     <td><tt>FALSE</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['chef-nodeAttributes'][*]</tt></td>
+    <td>String/StringArea</td>
+    <td>Data bag where to found the fqdn item</td>
+    <td><tt>nil</tt></td>
   </tr>
 </table>
 
