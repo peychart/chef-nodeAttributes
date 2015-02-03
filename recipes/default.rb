@@ -58,8 +58,8 @@ def getDatabagsNames( v )
   ret = []
   if v.is_a? Hash
         v.each do |n,i|; if n != "precedence" && n != "secret_key"
-          getDatabagsNames( i ).each do |j|; ret.push( j ); end; end
-        end
+          getDatabagsNames( i ).each do |j|; ret.push( j ); end
+        end; end
   elsif v.is_a? Array
         v.each do | i |; getDatabagsNames( i ).each do |j|; ret.push( j ); end; end
   else  ret.push( v )
