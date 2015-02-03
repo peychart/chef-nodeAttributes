@@ -37,11 +37,11 @@
 
 ## Usage
 
- Default attributes can be completed within a data bag whose items are the fqdn(1) of the nodes. Then, an other cookbook can be applied...
+ Default attributes of any cookbook called after this one can be completed within data bags whose items are the fqdn(1) of the node.
 
- When the attribute name is preceded with '!' in the data bag definition, any initial values of the array or hash are deleted.
+ In these data bags, when an attribute name is preceded with '!', all initial values of arrays or hashs are deleted.
 
- (1): Dots are not allowed (only alphanumeric), substitute by underscores
+ (1): Dots are not allowed in databags items (only alphanumeric); must be substitute by underscores...
 
 eg:
 <pre>
