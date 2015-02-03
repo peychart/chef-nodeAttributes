@@ -18,7 +18,7 @@
   <tr>
     <td><tt>['chef-nodeAttributes'][*]</tt></td>
     <td>String/StringArea</td>
-    <td>where found the fqdn item</td>
+    <td>Data bag where to found the fqdn item</td>
     <td><tt>nil</tt></td>
   </tr>
   <tr>
