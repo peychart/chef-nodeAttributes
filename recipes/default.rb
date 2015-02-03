@@ -57,7 +57,9 @@ end
 def getDatabagsName( v )
   ret = []
   if v.is_a? Hash
-        v.each do |n,i|; getDatabagsName( i ).each do |j|; ret.push( j ); end; end
+        v.each do |n,i|; if n != "precedence" && n != "secret_key"
+          getDatabagsName( i ).each do |j|; ret.push( j ); end; end
+        end
   elsif v.is_a? Array
         v.each do | i |; getDatabagsName( i ).each do |j|; ret.push( j ); end; end
   else  ret.push( v )
@@ -66,6 +68,8 @@ def getDatabagsName( v )
 end
 
 getDatabagsName( node['chef-nodeAttributes']['databag_name'] ).each do |i|
+puts '********************************************************'
+puts i
    $getEnv.call( node.default, getDataBag( i, node['fqdn'], node['chef-nodeAttributes']['secret_key'] ) )
 end
 
