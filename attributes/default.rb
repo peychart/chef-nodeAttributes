@@ -19,7 +19,6 @@
 #
 # PE-20140916
 
-default['chef-nodeAttributes']['databag_name'] = 'nodes'
 default['chef-nodeAttributes']['precedence'] = 'normal'
 default['chef-nodeAttributes']['secret_key'] = nil	# TRUE/FALSE/encryption key location
 

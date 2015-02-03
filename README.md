@@ -16,10 +16,10 @@
     <th>Default</th>
   </tr>
   <tr>
-    <td><tt>['chef-nodeAttributes']['databag_name']</tt></td>
+    <td><tt>['chef-nodeAttributes'][*]</tt></td>
     <td>String/StringArea</td>
     <td>where found the fqdn item</td>
-    <td><tt>nodes</tt></td>
+    <td><tt>nil</tt></td>
   </tr>
   <tr>
     <td><tt>['chef-nodeAttributes']['precedence']</tt></td>
@@ -140,7 +140,7 @@ Include `chef-nodeAttributes` in your node's `run_list`:
 {
   "override_attributes" => {
     "chef-nodeAttributes" => {
-      "databag_name" => "clusters"
+      "myDatabagName" => "clusters"    // Can be a stringsArray...
     }
   },
   "run_list" => [
@@ -149,6 +149,8 @@ Include `chef-nodeAttributes` in your node's `run_list`:
   ]
 }
 ```
+
+WARNING: don't use the same attribut name between succesive roles to define the databag name(s)
 
  So, node.default is then settled from the data bag definitions, on the item "fqdn" of the node; then node.'precedence' = node.default. An other cookbook::recipe can be applied...
 

@@ -67,9 +67,7 @@ def getDatabagsNames( v )
   ret
 end
 
-getDatabagsNames( node['chef-nodeAttributes']['databag_name'] ).each do |i|
-puts '********************************************************'
-puts i
+getDatabagsNames( node['chef-nodeAttributes'] ).each do |i|
    $getEnv.call( node.default, getDataBag( i, node['fqdn'], node['chef-nodeAttributes']['secret_key'] ) )
 end
 
