@@ -39,7 +39,7 @@
 
  Default attributes of any cookbook called after this one can be completed within data bags whose items are the fqdn(1) of the node.
 
- In these data bags, when an attribute name is preceded with '!', all initial values of arrays or hashs are deleted.
+ In these data bags, when an attribute name is preceded with '!', all initial values of arrays or hashs are deleted before update.
 
  (1): Dots are not allowed in databags items (only alphanumeric); must be substitute by underscores...
 
