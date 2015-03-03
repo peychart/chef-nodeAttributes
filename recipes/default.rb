@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: chef-nodeAttributes
+# Cookbook Name:: chef-serviceAttributes
 # Recipe:: default
 #
 # Copyright (C) 2014 PE, pf.
@@ -46,7 +46,7 @@ def getDataBag( name, item, secret_key )
   end
   rescue Exception
     puts '********************************************************************'
-    puts "No such a data bag or role for the node #{node['fqdn']}..."
+    puts "No such a data bag: '#{name}' or item: '#{item}'..."
     puts '********************************************************************'
     return nil
   ensure
@@ -55,23 +55,27 @@ def getDataBag( name, item, secret_key )
 end
 
 def getDatabagsNames( v )
-  ret = []
+  databagName = ""
+  servName = []
   if v.is_a? Hash
         v.each do |n,i|; if n != "precedence" && n != "secret_key" # Nerver use these names... ;-)
-          getDatabagsNames( i ).each do |j|; ret.push( j ); end
+          databagName = n
+          getDatabagsNames( i ).each do |n, j|; servName.concat( j ); end
         end; end
   elsif v.is_a? Array
-        v.each do | i |; getDatabagsNames( i ).each do |j|; ret.push( j ); end; end
-  else  ret.push( v )
+        v.each do | i |; getDatabagsNames( i ).each do |n, j|; servName.concat( j ); end; end
+  else  servName.push( v )
   end
-  ret
+  Hash[ databagName, servName ]
 end
 
-getDatabagsNames( node['chef-nodeAttributes'] ).each do |i|
-   $getEnv.call( node.default, getDataBag( i, node['fqdn'], node['chef-nodeAttributes']['secret_key'] ) )
+getDatabagsNames( node['chef-serviceAttributes'] ).each do |n, i|
+  i.each do |j|
+    $getEnv.call( node.default, getDataBag( n, j, node['chef-serviceAttributes']['secret_key'] ) )
+  end
 end
 
-case node['chef-nodeAttributes']['precedence']
+case node['chef-serviceAttributes']['precedence']
   when 'force_default'  then node.force_default  = node.default
   when 'force_override' then node.force_override = node.default
   when 'normal'         then node.normal         = node.default

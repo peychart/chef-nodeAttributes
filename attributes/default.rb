@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: chef-nodeAttributes
+# Cookbook Name:: chef-serviceAttributes
 # Recipe:: default
 #
 # Copyright (C) 2014 PE, pf.
@@ -19,6 +19,6 @@
 #
 # PE-20140916
 
-default['chef-nodeAttributes']['precedence'] = 'normal'
-default['chef-nodeAttributes']['secret_key'] = nil	# TRUE/FALSE/encryption key location
+default['chef-serviceAttributes']['precedence'] = 'normal'
+default['chef-serviceAttributes']['secret_key'] = nil	# TRUE/FALSE/encryption key location
 
