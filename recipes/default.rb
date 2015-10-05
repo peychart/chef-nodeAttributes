@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: chef-serviceAttributes
+# Cookbook Name:: chef-nodeAttributes
 # Recipe:: default
 #
 # Copyright (C) 2014 PE, pf.
@@ -69,13 +69,11 @@ def getDatabagsNames( v )
   Hash[ databagName, servName ]
 end
 
-getDatabagsNames( node['chef-serviceAttributes'] ).each do |n, i|
-  i.each do |j|
-    $getEnv.call( node.default, getDataBag( n, j, node['chef-serviceAttributes']['secret_key'] ) )
-  end
+getDatabagsNames( node['chef-nodeAttributes'] ).each do |i|
+  $getEnv.call( node.default, getDataBag( i, node['fqdn'], node['chef-nodeAttributes']['secret_key'] ) )
 end
 
-case node['chef-serviceAttributes']['precedence']
+case node['chef-nodeAttributes']['precedence']
   when 'force_default'  then node.force_default  = node.default
   when 'force_override' then node.force_override = node.default
   when 'normal'         then node.normal         = node.default
