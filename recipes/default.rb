@@ -55,21 +55,22 @@ def getDataBag( name, item, secret_key )
 end
 
 def getDatabagsNames( v )
-  databagName = ""
-  servName = []
+  ret = []
   if v.is_a? Hash
         v.each do |n,i|; if n != "precedence" && n != "secret_key" # Nerver use these names... ;-)
-          databagName = n
-          getDatabagsNames( i ).each do |n, j|; servName.concat( j ); end
+          getDatabagsNames( i ).each do |j|; ret.push( j ); end
         end; end
   elsif v.is_a? Array
-        v.each do | i |; getDatabagsNames( i ).each do |n, j|; servName.concat( j ); end; end
-  else  servName.push( v )
+        v.each do | i |; getDatabagsNames( i ).each do |j|; ret.push( j ); end; end
+  else  ret.push( v )
   end
-  Hash[ databagName, servName ]
+  ret
 end
 
 getDatabagsNames( node['chef-nodeAttributes'] ).each do |i|
+puts '************************************************************************************************************'
+puts i
+puts getDataBag( i, node['fqdn'], node['chef-nodeAttributes']['secret_key'] )
   $getEnv.call( node.default, getDataBag( i, node['fqdn'], node['chef-nodeAttributes']['secret_key'] ) )
 end
 
