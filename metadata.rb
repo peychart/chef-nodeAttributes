@@ -1,4 +1,4 @@
-name             'chef-servicesAttributes'
+name             'chef-nodeAttributes'
 maintainer       'PE, pf.'
 maintainer_email 'peychart@mail.pf'
 license          'GNU Public License 3.0'
